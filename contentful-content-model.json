@@ -1,0 +1,45 @@
+{
+  "contentTypes": [
+    {
+      "id": "siteSettings",
+      "name": "Site Settings",
+      "description": "Global site configuration — only one entry needed",
+      "fields": [
+        { "id": "companyName", "name": "Company Name", "type": "Symbol", "required": true },
+        { "id": "phone", "name": "Phone", "type": "Symbol", "required": true },
+        { "id": "email", "name": "Email", "type": "Symbol", "required": true },
+        { "id": "address", "name": "Address", "type": "Symbol", "required": true },
+        { "id": "heroHeadline", "name": "Hero Headline", "type": "Symbol", "required": true },
+        { "id": "heroSubheadline", "name": "Hero Subheadline", "type": "Text", "required": true },
+        { "id": "emergencyText", "name": "Emergency Banner Text", "type": "Symbol" }
+      ]
+    },
+    {
+      "id": "service",
+      "name": "Service",
+      "description": "A plumbing service offered by the company",
+      "fields": [
+        { "id": "title", "name": "Title", "type": "Symbol", "required": true },
+        { "id": "slug", "name": "Slug", "type": "Symbol", "required": true, "validations": [{ "unique": true }] },
+        { "id": "description", "name": "Description", "type": "Text", "required": true },
+        { "id": "icon", "name": "Icon (emoji)", "type": "Symbol" },
+        { "id": "price", "name": "Starting Price", "type": "Symbol" },
+        { "id": "featured", "name": "Featured", "type": "Boolean" }
+      ]
+    },
+    {
+      "id": "blogPost",
+      "name": "Blog Post",
+      "description": "A blog article or how-to guide",
+      "fields": [
+        { "id": "title", "name": "Title", "type": "Symbol", "required": true },
+        { "id": "slug", "name": "Slug", "type": "Symbol", "required": true, "validations": [{ "unique": true }] },
+        { "id": "excerpt", "name": "Excerpt", "type": "Text", "required": true },
+        { "id": "body", "name": "Body", "type": "RichText", "required": true },
+        { "id": "publishedDate", "name": "Published Date", "type": "Date", "required": true },
+        { "id": "coverImage", "name": "Cover Image", "type": "Link", "linkType": "Asset" },
+        { "id": "tags", "name": "Tags", "type": "Array", "items": { "type": "Symbol" } }
+      ]
+    }
+  ]
+}

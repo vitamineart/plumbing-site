@@ -1,0 +1,367 @@
+---
+interface Props {
+  headline?: string;
+  subheadline?: string;
+}
+
+const {
+  headline = "YOUR PIPES,\nOUR EXPERTISE.",
+  subheadline = "Licensed master plumbers serving the greater metro area. Emergency services available around the clock.",
+} = Astro.props;
+---
+
+<section class="hero noise">
+  <!-- Decorative pipes background -->
+  <div class="pipes-bg" aria-hidden="true">
+    <svg class="pipes-svg" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <rect x="900" y="0" width="8" height="200" fill="rgba(181,96,42,0.12)"/>
+      <rect x="900" y="200" width="250" height="8" fill="rgba(181,96,42,0.12)"/>
+      <rect x="1142" y="200" width="8" height="400" fill="rgba(181,96,42,0.12)"/>
+      <rect x="700" y="100" width="8" height="150" fill="rgba(181,96,42,0.08)"/>
+      <rect x="700" y="250" width="150" height="8" fill="rgba(181,96,42,0.08)"/>
+      <rect x="842" y="250" width="8" height="300" fill="rgba(181,96,42,0.08)"/>
+      <rect x="50" y="300" width="200" height="6" fill="rgba(181,96,42,0.06)"/>
+      <rect x="50" y="300" width="6" height="300" fill="rgba(181,96,42,0.06)"/>
+      <circle cx="900" cy="200" r="12" fill="none" stroke="rgba(181,96,42,0.2)" stroke-width="4"/>
+      <circle cx="700" cy="250" r="12" fill="none" stroke="rgba(181,96,42,0.15)" stroke-width="4"/>
+      <circle cx="1142" cy="200" r="8" fill="rgba(181,96,42,0.15)"/>
+      <circle cx="842" cy="250" r="8" fill="rgba(181,96,42,0.12)"/>
+    </svg>
+  </div>
+
+  <!-- Emergency ribbon -->
+  <div class="emergency-ribbon">
+    <div class="ribbon-inner">
+      <span class="pulse-dot"></span>
+      <span>24/7 Emergency Service Available</span>
+      <span class="sep">·</span>
+      <a href="tel:+15551234567" class="ribbon-phone">(555) 123-4567</a>
+    </div>
+  </div>
+
+  <div class="container hero-content">
+    <div class="hero-text">
+      <div class="badge">Licensed &amp; Insured · Est. 2003</div>
+      <h1 class="hero-title">
+        {headline.split('\n').map((line, i) => (
+          <span class={`line line-${i}`} set:text={line} />
+        ))}
+      </h1>
+      <p class="hero-sub">{subheadline}</p>
+
+      <div class="hero-actions">
+        <a href="tel:+15551234567" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+          </svg>
+          Call Now
+        </a>
+        <a href="/services" class="btn btn-outline">View Services</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">20+</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">4.9★</span>
+          <span class="stat-label">Customer Rating</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">5K+</span>
+          <span class="stat-label">Jobs Completed</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="card-header">
+        <span class="card-badge">Request a Quote</span>
+      </div>
+      <form class="quote-form" novalidate>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="John Smith" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" required />
+        </div>
+        <div class="form-group">
+          <label for="service">Service Needed</label>
+          <select id="service" name="service">
+            <option value="">Select a service…</option>
+            <option>Emergency Repair</option>
+            <option>Drain Cleaning</option>
+            <option>Pipe Installation</option>
+            <option>Water Heater</option>
+            <option>Leak Detection</option>
+            <option>Bathroom Remodel</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Brief Description</label>
+          <textarea id="message" name="message" rows="3" placeholder="Describe the issue…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">Get Free Quote</button>
+        <p class="form-disclaimer">We typically respond within 30 minutes.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+.hero {
+  position: relative;
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--navy) 0%, #0a1520 60%, #16222e 100%);
+  overflow: hidden;
+}
+
+.pipes-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pipes-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.emergency-ribbon {
+  background: linear-gradient(90deg, var(--copper) 0%, var(--copper-bright) 100%);
+  color: var(--white);
+  text-align: center;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+.ribbon-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--white);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+.ribbon-phone {
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.sep { opacity: 0.5; }
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4rem;
+  align-items: center;
+  flex: 1;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-text {
+  max-width: 600px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.7s ease both;
+}
+
+.line-1 {
+  color: var(--copper-bright);
+  animation: slideUp 0.7s ease 0.1s both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-sub {
+  color: var(--cream-dim);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 480px;
+  animation: slideUp 0.7s ease 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  animation: slideUp 0.7s ease 0.3s both;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  animation: slideUp 0.7s ease 0.4s both;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--copper-bright);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+}
+
+/* ─── Quote Card ──── */
+.hero-card {
+  background: var(--navy-light);
+  border: 1px solid rgba(181, 96, 42, 0.25);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 340px;
+  flex-shrink: 0;
+  animation: slideUp 0.7s ease 0.15s both;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+}
+
+.card-header {
+  margin-bottom: 1.5rem;
+}
+
+.card-badge {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.05em;
+  color: var(--white);
+}
+
+.quote-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.65rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  resize: vertical;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(138, 154, 176, 0.5); }
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--copper);
+}
+
+.form-group select option {
+  background: var(--navy-mid);
+}
+
+.form-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.form-disclaimer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+@media (max-width: 1024px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    padding-top: 3rem;
+  }
+  .hero-card {
+    width: 100%;
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 500px) {
+  .ribbon-inner { flex-wrap: wrap; gap: 0.35rem; }
+  .hero-stats { gap: 1rem; }
+}
+</style>

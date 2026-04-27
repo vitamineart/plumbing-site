@@ -1,0 +1,193 @@
+{
+  "contentTypes": [
+    {
+      "sys": {
+        "id": "siteSettings",
+        "type": "ContentType"
+      },
+      "name": "Site Settings",
+      "description": "Global site configuration — create only one entry",
+      "displayField": "companyName",
+      "fields": [
+        {
+          "id": "companyName",
+          "name": "Company Name",
+          "type": "Symbol",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "phone",
+          "name": "Phone",
+          "type": "Symbol",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "email",
+          "name": "Email",
+          "type": "Symbol",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "address",
+          "name": "Address",
+          "type": "Symbol",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "heroHeadline",
+          "name": "Hero Headline",
+          "type": "Symbol",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "heroSubheadline",
+          "name": "Hero Subheadline",
+          "type": "Text",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "emergencyText",
+          "name": "Emergency Banner Text",
+          "type": "Symbol",
+          "required": false,
+          "localized": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "id": "service",
+        "type": "ContentType"
+      },
+      "name": "Service",
+      "description": "A plumbing service offered by the company",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "Symbol",
+          "required": true,
+          "localized": false,
+          "validations": [
+            { "unique": true },
+            { "regexp": { "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "flags": "" } }
+          ]
+        },
+        {
+          "id": "description",
+          "name": "Description",
+          "type": "Text",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "icon",
+          "name": "Icon (emoji)",
+          "type": "Symbol",
+          "required": false,
+          "localized": false
+        },
+        {
+          "id": "price",
+          "name": "Starting Price",
+          "type": "Symbol",
+          "required": false,
+          "localized": false
+        },
+        {
+          "id": "featured",
+          "name": "Featured",
+          "type": "Boolean",
+          "required": false,
+          "localized": false
+        }
+      ]
+    },
+    {
+      "sys": {
+        "id": "blogPost",
+        "type": "ContentType"
+      },
+      "name": "Blog Post",
+      "description": "A blog article or how-to guide",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "slug",
+          "name": "Slug",
+          "type": "Symbol",
+          "required": true,
+          "localized": false,
+          "validations": [
+            { "unique": true },
+            { "regexp": { "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "flags": "" } }
+          ]
+        },
+        {
+          "id": "excerpt",
+          "name": "Excerpt",
+          "type": "Text",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "body",
+          "name": "Body",
+          "type": "RichText",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "publishedDate",
+          "name": "Published Date",
+          "type": "Date",
+          "required": true,
+          "localized": false
+        },
+        {
+          "id": "coverImage",
+          "name": "Cover Image",
+          "type": "Link",
+          "linkType": "Asset",
+          "required": false,
+          "localized": false,
+          "validations": [
+            { "linkMimetypeGroup": ["image"] }
+          ]
+        },
+        {
+          "id": "tags",
+          "name": "Tags",
+          "type": "Array",
+          "required": false,
+          "localized": false,
+          "items": {
+            "type": "Symbol",
+            "validations": []
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "plumbing-site",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
+    "astro": "^5.18.0",
+    "contentful": "^10.6.21"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5"
+  }
+}

@@ -1,0 +1,9 @@
+[build]
+  # Repo root already contains package.json; don't use a monorepo base dir.
+  base = "."
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Ensure consistent Node version in Netlify builds (match as needed).
+  NODE_VERSION = "20"

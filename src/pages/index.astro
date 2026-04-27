@@ -1,0 +1,471 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { getServices, getSiteSettings } from '../lib/contentful';
+
+// Fetch from Contentful (falls back to static if env vars not set)
+let services = [];
+let settings = null;
+
+try {
+  [services, settings] = await Promise.all([
+    getServices(),
+    getSiteSettings(),
+  ]);
+} catch (e) {
+  console.warn('Contentful not configured — using fallback data.');
+}
+
+// Fallback services if Contentful isn't configured yet
+if (!services.length) {
+  services = [
+    { title: 'Emergency Repairs', slug: 'emergency', description: 'Burst pipes, flooding, no hot water? Our emergency team is available 24/7/365. We arrive within 60 minutes.', icon: '🚨', price: '$99 service call', featured: true },
+    { title: 'Drain Cleaning', slug: 'drain', description: 'Slow or blocked drains cleared with hydro-jetting and professional snaking equipment.', icon: '🌀', price: '$149', featured: false },
+    { title: 'Pipe Installation', slug: 'pipe', description: 'New construction or full replumbing with copper, PEX, or CPVC piping systems.', icon: '🔩', price: 'Free estimate', featured: false },
+    { title: 'Water Heater', slug: 'water-heater', description: 'Installation, repair, and replacement of tank and tankless water heaters. Same-day service available.', icon: '🔥', price: '$89 diagnostic', featured: false },
+    { title: 'Leak Detection', slug: 'leak', description: 'Non-invasive leak detection using acoustic and thermal imaging technology — no guesswork.', icon: '💧', price: '$175', featured: false },
+    { title: 'Bathroom Remodel', slug: 'remodel', description: 'Complete bathroom plumbing for remodels: shower, tub, toilet, vanity, and rough-in work.', icon: '🚿', price: 'Free estimate', featured: false },
+  ];
+}
+
+const testimonials = [
+  { name: 'Sarah M.', role: 'Homeowner', body: 'Had a burst pipe at 2am. ProFlow arrived in 45 minutes and fixed it fast. Professional and fair pricing.', rating: 5 },
+  { name: 'James K.', role: 'Property Manager', body: 'Managing 12 rental units — ProFlow is our go-to for everything. Reliable, thorough, and always on time.', rating: 5 },
+  { name: 'Linda T.', role: 'Business Owner', body: 'Diagnosed a slab leak other plumbers missed. Saved us thousands in potential damage. Incredible work.', rating: 5 },
+];
+---
+
+<Layout
+  title="ProFlow Plumbing — Expert Plumbers"
+  description="Licensed master plumbers. Emergency service 24/7. Drains, pipes, water heaters & more."
+>
+  <Hero
+    headline={settings?.heroHeadline ?? "YOUR PIPES,\nOUR EXPERTISE."}
+    subheadline={settings?.heroSubheadline ?? "Licensed master plumbers serving the greater metro area. Emergency services available around the clock."}
+  />
+
+  <!-- Services Section -->
+  <section class="section services-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">What We Do</div>
+        <h2 class="section-title">Our <span>Services</span></h2>
+        <div class="copper-line"></div>
+        <p class="section-intro">From emergency callouts to full bathroom remodels — we handle every plumbing challenge with precision and care.</p>
+      </div>
+      <div class="services-grid">
+        {services.map(service => (
+          <ServiceCard {...service} />
+        ))}
+      </div>
+      <div class="section-cta">
+        <a href="/services" class="btn btn-outline">View All Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="section why-section">
+    <div class="container why-grid">
+      <div class="why-text">
+        <div class="badge">Why ProFlow</div>
+        <h2 class="section-title">Trusted by <span>Thousands</span> of Homeowners</h2>
+        <div class="copper-line"></div>
+        <p class="why-body">
+          We've built our reputation on showing up when it matters, doing the job right the first time, and treating your home like our own. No upselling, no surprises.
+        </p>
+
+        <ul class="why-list">
+          {[
+            ['✓', 'Licensed, bonded & fully insured'],
+            ['✓', 'Upfront, flat-rate pricing — no hidden fees'],
+            ['✓', 'Background-checked, uniformed technicians'],
+            ['✓', '1-year labor warranty on all work'],
+            ['✓', '60-minute emergency response guarantee'],
+          ].map(([icon, text]) => (
+            <li>
+              <span class="check">{icon}</span>
+              <span>{text}</span>
+            </li>
+          ))}
+        </ul>
+
+        <a href="/#contact" class="btn btn-primary" style="margin-top: 2rem;">Book a Plumber</a>
+      </div>
+
+      <div class="why-visual">
+        <div class="stat-card">
+          <div class="big-stat">20<span class="sup">+</span></div>
+          <div class="stat-desc">Years serving the community</div>
+        </div>
+        <div class="cert-grid">
+          {['Master Plumber', 'EPA Certified', 'BBB A+', 'Angi Top Pro'].map(cert => (
+            <div class="cert-tag">
+              <span class="cert-check">✓</span>
+              {cert}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section testimonials-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">Reviews</div>
+        <h2 class="section-title">What Our <span>Customers Say</span></h2>
+        <div class="copper-line"></div>
+      </div>
+      <div class="testimonials-grid">
+        {testimonials.map(t => (
+          <div class="testimonial-card">
+            <div class="stars">{'★'.repeat(t.rating)}</div>
+            <blockquote class="testimonial-body">"{t.body}"</blockquote>
+            <div class="testimonial-author">
+              <div class="author-avatar">{t.name[0]}</div>
+              <div>
+                <div class="author-name">{t.name}</div>
+                <div class="author-role">{t.role}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section contact-section" id="contact">
+    <div class="container contact-grid">
+      <div class="contact-info">
+        <div class="badge">Get In Touch</div>
+        <h2 class="section-title">Ready to <span>Fix It?</span></h2>
+        <div class="copper-line"></div>
+        <div class="contact-methods">
+          <a href="tel:+15551234567" class="contact-method">
+            <div class="method-icon">📞</div>
+            <div>
+              <div class="method-label">Call or Text</div>
+              <div class="method-value">(555) 123-4567</div>
+            </div>
+          </a>
+          <a href="mailto:info@proflowplumbing.com" class="contact-method">
+            <div class="method-icon">✉️</div>
+            <div>
+              <div class="method-label">Email Us</div>
+              <div class="method-value">info@proflowplumbing.com</div>
+            </div>
+          </a>
+          <div class="contact-method">
+            <div class="method-icon">📍</div>
+            <div>
+              <div class="method-label">Service Area</div>
+              <div class="method-value">Greater Metro Area, CA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="c-name">Name *</label>
+            <input type="text" id="c-name" name="name" required placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label for="c-phone">Phone *</label>
+            <input type="tel" id="c-phone" name="phone" required placeholder="(555) 000-0000" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="c-email">Email</label>
+          <input type="email" id="c-email" name="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="c-service">Service Required</label>
+          <select id="c-service" name="service">
+            <option value="">Select…</option>
+            <option>Emergency Repair</option>
+            <option>Drain Cleaning</option>
+            <option>Pipe Installation</option>
+            <option>Water Heater</option>
+            <option>Leak Detection</option>
+            <option>Bathroom Remodel</option>
+            <option>Other / Not Sure</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="c-message">Tell us about the problem</label>
+          <textarea id="c-message" name="message" rows="4" placeholder="Describe the issue, when it started, location in the home…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+/* Services */
+.section-header {
+  margin-bottom: 3rem;
+}
+.section-intro {
+  color: var(--gray);
+  max-width: 560px;
+  line-height: 1.7;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.section-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+/* Why Section */
+.why-section {
+  background: var(--navy-mid);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+.why-body {
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+.why-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.why-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--cream-dim);
+}
+.check {
+  color: var(--copper-light);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.why-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.stat-card {
+  background: var(--navy-light);
+  border: 1px solid rgba(181, 96, 42, 0.3);
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+}
+.big-stat {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  line-height: 1;
+  color: var(--copper-bright);
+  position: relative;
+  display: inline-block;
+}
+.sup {
+  font-size: 3rem;
+  vertical-align: super;
+  color: var(--copper);
+}
+.stat-desc {
+  color: var(--gray);
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+.cert-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.cert-tag {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cream-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cert-check { color: var(--copper-light); }
+
+/* Testimonials */
+.testimonials-section {
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%);
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.testimonial-card {
+  background: var(--navy-light);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.stars {
+  color: var(--copper-bright);
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+.testimonial-body {
+  color: var(--cream-dim);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-style: italic;
+  flex: 1;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--copper), var(--copper-bright));
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.author-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+.author-role {
+  font-size: 0.78rem;
+  color: var(--gray);
+}
+
+/* Contact */
+.contact-section { background: var(--navy-mid); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 5rem;
+  align-items: start;
+}
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem;
+  background: var(--navy-light);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+.contact-method:hover { border-color: var(--copper); }
+.method-icon { font-size: 1.5rem; }
+.method-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray);
+}
+.method-value {
+  font-weight: 600;
+  color: var(--white);
+  font-size: 0.95rem;
+}
+.contact-form {
+  background: var(--navy-light);
+  border: 1px solid rgba(181, 96, 42, 0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.65rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  resize: vertical;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--copper); }
+.form-group select option { background: var(--navy-mid); }
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(138, 154, 176, 0.5); }
+.form-submit { width: 100%; justify-content: center; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .why-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .cert-grid { grid-template-columns: 1fr; }
+}
+</style>

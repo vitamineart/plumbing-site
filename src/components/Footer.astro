@@ -1,0 +1,260 @@
+---
+const services = [
+  'Emergency Repairs',
+  'Pipe Installation',
+  'Drain Cleaning',
+  'Water Heater',
+  'Bathroom Remodel',
+  'Leak Detection',
+];
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="logo-name">ProFlow</span>
+          <span class="logo-sub">Plumbing</span>
+        </div>
+        <p class="footer-tagline">
+          Expert plumbing solutions for residential and commercial properties. Licensed, bonded, and available 24/7 for emergencies.
+        </p>
+        <div class="license-badge">
+          <span>Licensed &amp; Bonded</span>
+          <span class="dot">·</span>
+          <span>Lic. #PL-28847</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Services</h3>
+        <ul class="footer-list">
+          {services.map(s => (
+            <li><a href="/services">{s}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-list">
+          {links.map(l => (
+            <li><a href={l.href}>{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Contact</h3>
+        <ul class="footer-contact">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81"/></svg>
+            <a href="tel:+15551234567">(555) 123-4567</a>
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:info@proflowplumbing.com">info@proflowplumbing.com</a>
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>123 Pipe St, Cityville, CA 90210</span>
+          </li>
+        </ul>
+        <div class="footer-hours">
+          <strong>Hours:</strong> Mon–Sat 7am–8pm<br/>
+          <span class="emergency-hours">Emergency: 24/7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>&copy; {new Date().getFullYear()} ProFlow Plumbing. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.site-footer {
+  background: var(--navy-mid);
+  border-top: 1px solid rgba(181, 96, 42, 0.2);
+  margin-top: auto;
+}
+
+.footer-top {
+  padding: 4rem 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+}
+
+.footer-brand .footer-logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.footer-brand .logo-name {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  color: var(--white);
+  letter-spacing: 0.05em;
+}
+
+.footer-brand .logo-sub {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--copper-light);
+}
+
+.footer-tagline {
+  color: var(--gray);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.license-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--copper-light);
+}
+
+.dot { opacity: 0.4; }
+
+.footer-heading {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--copper-light);
+  margin-bottom: 1rem;
+}
+
+.footer-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.footer-list a {
+  color: var(--gray);
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.footer-list a:hover {
+  color: var(--copper-light);
+}
+
+.footer-contact {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: var(--gray);
+  font-size: 0.875rem;
+}
+
+.footer-contact svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--copper);
+}
+
+.footer-contact a:hover { color: var(--copper-light); }
+
+.footer-hours {
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+.footer-hours strong { color: var(--cream-dim); }
+
+.emergency-hours {
+  color: var(--copper-light);
+  font-weight: 600;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1.25rem 0;
+}
+
+.footer-bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-bottom p {
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-bottom-links a {
+  font-size: 0.8rem;
+  color: var(--gray);
+  transition: color 0.2s;
+}
+
+.footer-bottom-links a:hover { color: var(--copper-light); }
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-bottom-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+</style>

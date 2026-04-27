@@ -1,0 +1,217 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/#contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo" aria-label="ProFlow Plumbing Home">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 4h4v10H8V4zm0 14h4v10H8V18zm8-8h4v6h-4v-6zm0 10h4v6h-4v-6zM4 13h24v2H4v-2z" fill="#d4763a"/>
+          <circle cx="10" cy="14" r="2" fill="#b5602a"/>
+          <circle cx="18" cy="10" r="2" fill="#b5602a"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">ProFlow</span>
+        <span class="logo-sub">Plumbing</span>
+      </div>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class={`nav-link ${currentPath === link.href ? 'active' : ''}`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <a href="tel:+15551234567" class="header-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+      </svg>
+      (555) 123-4567
+    </a>
+
+    <!-- Mobile menu toggle -->
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    {navLinks.map(link => (
+      <a href={link.href} class="mobile-nav-link">{link.label}</a>
+    ))}
+    <a href="tel:+15551234567" class="mobile-nav-phone">📞 (555) 123-4567</a>
+  </div>
+</header>
+
+<style>
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13, 27, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(181, 96, 42, 0.2);
+  transition: box-shadow 0.3s;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  height: 70px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logo-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  color: var(--white);
+}
+
+.logo-sub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--copper-light);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cream-dim);
+  padding: 0.5rem 0.85rem;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--copper-light);
+  background: rgba(181, 96, 42, 0.1);
+}
+
+.header-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--copper);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 4px;
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.header-cta:hover {
+  background: var(--copper-bright);
+  transform: translateY(-1px);
+}
+
+.mobile-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-left: auto;
+}
+
+.mobile-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--cream);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(181, 96, 42, 0.15);
+  gap: 0.25rem;
+}
+
+.mobile-nav-link {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: var(--cream-dim);
+  font-weight: 500;
+}
+
+.mobile-nav-phone {
+  margin-top: 0.5rem;
+  color: var(--copper-light);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .nav-links, .header-cta { display: none; }
+  .mobile-toggle { display: flex; }
+  .mobile-nav.open { display: flex; }
+}
+</style>
+
+<script>
+const toggle = document.getElementById('mobile-toggle');
+const mobileNav = document.getElementById('mobile-nav');
+
+toggle?.addEventListener('click', () => {
+  const isOpen = mobileNav?.classList.contains('open');
+  mobileNav?.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', String(!isOpen));
+  mobileNav?.setAttribute('aria-hidden', String(isOpen));
+});
+
+// Scroll shadow
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('site-header');
+  header?.style.setProperty('box-shadow', window.scrollY > 10
+    ? '0 4px 24px rgba(0,0,0,0.4)'
+    : 'none'
+  );
+});
+</script>

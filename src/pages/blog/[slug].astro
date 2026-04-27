@@ -1,0 +1,384 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getBlogPosts, getBlogPostBySlug } from '../../lib/contentful';
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+
+export async function getStaticPaths() {
+  let posts = [];
+  try {
+    posts = await getBlogPosts();
+  } catch (e) {
+    return [];
+  }
+  return posts.map(post => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+let post = null;
+
+try {
+  post = await getBlogPostBySlug(slug as string);
+} catch (e) {
+  // Not found
+}
+
+if (!post) {
+  return Astro.redirect('/blog');
+}
+
+const bodyHtml = post.body ? documentToHtmlString(post.body) : '';
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
+}
+---
+
+<Layout
+  title={post.title}
+  description={post.excerpt}
+  ogImage={post.coverImage?.url}
+>
+  <article class="blog-post">
+    <!-- Post Header -->
+    <header class="post-header">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/blog">← Blog</a>
+          <span class="sep">/</span>
+          <span class="current">{post.title}</span>
+        </nav>
+
+        <div class="post-tags">
+          {post.tags.map((tag: string) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+
+        <h1 class="post-title">{post.title}</h1>
+        <p class="post-excerpt">{post.excerpt}</p>
+
+        <div class="post-meta">
+          <div class="meta-author">
+            <div class="author-avatar">PF</div>
+            <div>
+              <div class="author-name">ProFlow Plumbing Team</div>
+              <time class="post-date">{formatDate(post.publishedDate)}</time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {post.coverImage && (
+      <div class="post-cover">
+        <div class="container">
+          <img
+            src={post.coverImage.url + '?w=1200&h=500&fit=fill&f=face'}
+            alt={post.coverImage.description}
+            class="cover-img"
+            loading="eager"
+          />
+        </div>
+      </div>
+    )}
+
+    <!-- Post Content -->
+    <div class="post-content-wrapper">
+      <div class="container post-layout">
+        <div class="post-body rich-text" set:html={bodyHtml} />
+
+        <aside class="post-sidebar">
+          <div class="sidebar-card">
+            <h3 class="sidebar-title">Need a Plumber?</h3>
+            <p class="sidebar-body">Our licensed technicians are available 24/7 for emergencies and same-day appointments.</p>
+            <a href="tel:+15551234567" class="btn btn-primary sidebar-btn">
+              📞 Call Now
+            </a>
+            <a href="/#contact" class="btn btn-outline sidebar-btn">
+              Request Quote
+            </a>
+          </div>
+
+          <div class="sidebar-card">
+            <h3 class="sidebar-title">Our Services</h3>
+            <ul class="sidebar-links">
+              {['Emergency Repairs', 'Drain Cleaning', 'Water Heaters', 'Leak Detection', 'Pipe Repair', 'Remodel Plumbing'].map(s => (
+                <li><a href="/services">{s}</a></li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+.post-header {
+  background: var(--navy-mid);
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.breadcrumb a {
+  color: var(--copper-light);
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover { color: var(--copper-bright); }
+
+.sep { opacity: 0.4; }
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--copper-light);
+  background: rgba(181, 96, 42, 0.12);
+  border: 1px solid rgba(181, 96, 42, 0.25);
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+}
+
+.post-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  max-width: 800px;
+  margin-bottom: 1rem;
+}
+
+.post-excerpt {
+  color: var(--gray);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  max-width: 700px;
+  margin-bottom: 2rem;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.meta-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.author-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--copper), var(--copper-bright));
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.author-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--cream-dim);
+}
+
+.post-date {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gray);
+}
+
+.post-cover {
+  padding: 2rem 0;
+}
+
+.cover-img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.post-content-wrapper {
+  padding: 3rem 0 5rem;
+}
+
+.post-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Rich Text Content */
+.rich-text {
+  color: var(--cream-dim);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.rich-text :global(h2) {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  margin: 2.5rem 0 1rem;
+}
+
+.rich-text :global(h3) {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  margin: 2rem 0 0.75rem;
+}
+
+.rich-text :global(p) {
+  margin-bottom: 1.25rem;
+}
+
+.rich-text :global(a) {
+  color: var(--copper-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rich-text :global(a:hover) { color: var(--copper-bright); }
+
+.rich-text :global(ul),
+.rich-text :global(ol) {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rich-text :global(li::marker) {
+  color: var(--copper);
+}
+
+.rich-text :global(blockquote) {
+  border-left: 4px solid var(--copper);
+  background: rgba(181, 96, 42, 0.08);
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  color: var(--cream-dim);
+  font-style: italic;
+  margin: 1.5rem 0;
+}
+
+.rich-text :global(code) {
+  background: rgba(255,255,255,0.08);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+
+.rich-text :global(hr) {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin: 2.5rem 0;
+}
+
+/* Sidebar */
+.post-sidebar {
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sidebar-card {
+  background: var(--navy-light);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.sidebar-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.sidebar-body {
+  color: var(--gray);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-btn {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.7rem 1rem;
+}
+
+.sidebar-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-links a {
+  color: var(--gray);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.2s;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-links a::before {
+  content: '→';
+  color: var(--copper);
+  font-size: 0.75rem;
+}
+
+.sidebar-links a:hover { color: var(--copper-light); }
+
+@media (max-width: 900px) {
+  .post-layout { grid-template-columns: 1fr; }
+  .post-sidebar { position: static; }
+}
+</style>

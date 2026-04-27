@@ -1,0 +1,263 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { getServices } from '../lib/contentful';
+
+let services = [];
+try {
+  services = await getServices();
+} catch (e) {
+  // Fallback
+}
+
+if (!services.length) {
+  services = [
+    {
+      title: 'Emergency Repairs', slug: 'emergency',
+      description: 'Burst pipes, flooding, no hot water — our emergency team is standing by 24/7. Guaranteed 60-minute response within our service area.',
+      icon: '🚨', price: '$99 service call', featured: true,
+    },
+    {
+      title: 'Drain Cleaning', slug: 'drain',
+      description: 'Slow or completely blocked drains cleared using professional hydro-jetting and electric snaking equipment. Kitchen, bathroom, floor drains, and sewer lines.',
+      icon: '🌀', price: 'From $149', featured: false,
+    },
+    {
+      title: 'Pipe Installation & Repair', slug: 'pipe',
+      description: 'New construction rough-in, full replumbing, or individual pipe repair. We work with copper, PEX, CPVC, and galvanized systems.',
+      icon: '🔩', price: 'Free estimate', featured: false,
+    },
+    {
+      title: 'Water Heater Services', slug: 'water-heater',
+      description: 'Installation, repair, and replacement of traditional tank and tankless water heaters. We carry leading brands in stock for same-day installs.',
+      icon: '🔥', price: '$89 diagnostic', featured: false,
+    },
+    {
+      title: 'Leak Detection', slug: 'leak',
+      description: 'Non-invasive leak detection using acoustic listening devices and thermal imaging cameras. Pinpoint accuracy without unnecessary demolition.',
+      icon: '💧', price: 'From $175', featured: false,
+    },
+    {
+      title: 'Bathroom Remodel Plumbing', slug: 'remodel',
+      description: 'Complete rough-in and finish plumbing for bathroom renovations: shower systems, tubs, toilets, vanity installations, and wet room waterproofing.',
+      icon: '🚿', price: 'Free estimate', featured: false,
+    },
+    {
+      title: 'Water Filtration', slug: 'filtration',
+      description: 'Whole-house and under-sink water filtration and softener systems. Improve water quality and extend the life of your appliances.',
+      icon: '💎', price: 'Free estimate', featured: false,
+    },
+    {
+      title: 'Sewer Line Services', slug: 'sewer',
+      description: 'Sewer inspection with HD camera, hydro-jetting cleaning, trenchless sewer repair and replacement. Fast diagnosis, minimal disruption.',
+      icon: '🔍', price: '$199 camera inspection', featured: false,
+    },
+    {
+      title: 'Gas Line Services', slug: 'gas',
+      description: 'Licensed gas line installation and repair for appliances, outdoor BBQ connections, and whole-home gas system pressure testing.',
+      icon: '⚡', price: 'Free estimate', featured: false,
+    },
+  ];
+}
+
+const process = [
+  { step: '01', title: 'Call or Book Online', body: 'Reach us by phone, text, or the form below. We confirm your appointment within 30 minutes.' },
+  { step: '02', title: 'Upfront Diagnosis', body: 'Our licensed plumber arrives, diagnoses the issue, and gives you a flat-rate price — no surprises.' },
+  { step: '03', title: 'Expert Repair', body: 'We complete the work using quality parts and time-tested techniques. You approve everything first.' },
+  { step: '04', title: 'Quality Guarantee', body: 'Every job is backed by our 1-year labor warranty. If anything fails, we come back at no charge.' },
+];
+---
+
+<Layout
+  title="Plumbing Services"
+  description="Full-service plumbing — emergency repairs, drain cleaning, water heaters, pipe installation, leak detection, and more."
+>
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <div class="badge">Expert Plumbers</div>
+      <h1 class="page-title">Our <span>Services</span></h1>
+      <div class="copper-line"></div>
+      <p class="page-intro">
+        Comprehensive plumbing services for homeowners and businesses. Every technician is licensed, background-checked, and committed to quality.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="section">
+    <div class="container">
+      <div class="services-grid">
+        {services.map(service => (
+          <ServiceCard {...service} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="section process-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">How It Works</div>
+        <h2 class="section-title">Our <span>Process</span></h2>
+        <div class="copper-line"></div>
+      </div>
+      <div class="process-grid">
+        {process.map(p => (
+          <div class="process-step">
+            <div class="step-num">{p.step}</div>
+            <h3 class="step-title">{p.title}</h3>
+            <p class="step-body">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner">
+    <div class="container cta-inner">
+      <div>
+        <h2 class="cta-title">Need a Plumber Today?</h2>
+        <p class="cta-body">Emergency and same-day appointments available. Call now and we'll be there within the hour.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="tel:+15551234567" class="btn btn-primary">
+          📞 Call (555) 123-4567
+        </a>
+        <a href="/#contact" class="btn btn-outline">Request Online</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+.page-header {
+  padding: 5rem 0 3rem;
+  background: linear-gradient(180deg, var(--navy-mid) 0%, var(--navy) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5rem);
+  line-height: 1;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  margin-bottom: 0;
+}
+.page-title span { color: var(--copper-bright); }
+.page-intro {
+  color: var(--gray);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Process */
+.process-section {
+  background: var(--navy-mid);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.section-header { margin-bottom: 3rem; }
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  position: relative;
+}
+.process-grid::before {
+  content: '';
+  position: absolute;
+  top: 1.5rem;
+  left: calc(25% / 2);
+  right: calc(25% / 2);
+  height: 2px;
+  background: linear-gradient(90deg, var(--copper), var(--copper-bright));
+  opacity: 0.25;
+}
+.process-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+}
+.step-num {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--copper);
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+}
+.step-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.03em;
+  color: var(--white);
+}
+.step-body {
+  font-size: 0.875rem;
+  color: var(--gray);
+  line-height: 1.65;
+}
+
+/* CTA Banner */
+.cta-banner {
+  background: linear-gradient(135deg, var(--copper) 0%, var(--copper-bright) 100%);
+  padding: 4rem 0;
+}
+.cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--white);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+.cta-body {
+  color: rgba(255,255,255,0.85);
+  max-width: 420px;
+}
+.cta-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.cta-actions .btn-primary {
+  background: var(--white);
+  color: var(--copper);
+  border-color: var(--white);
+}
+.cta-actions .btn-primary:hover {
+  background: var(--cream);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.cta-actions .btn-outline {
+  border-color: rgba(255,255,255,0.5);
+  color: var(--white);
+}
+.cta-actions .btn-outline:hover {
+  border-color: var(--white);
+}
+
+@media (max-width: 900px) {
+  .process-grid { grid-template-columns: 1fr 1fr; }
+  .process-grid::before { display: none; }
+}
+@media (max-width: 500px) {
+  .process-grid { grid-template-columns: 1fr; }
+}
+</style>
